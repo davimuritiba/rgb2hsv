@@ -109,23 +109,30 @@ def gerar_histograma(hsv: np.ndarray, canal: int = 0, bins: int = 180) -> np.nda
     """
     Gera histograma de um canal HSV.
     canal: 0=H (matiz), 1=S (saturação), 2=V (valor)
-    Retorna imagem do histograma (BGR).
+    Retorna imagem do histograma (RGB).
     """
     canais = cv2.split(hsv)
     hist = cv2.calcHist([canais[canal]], [0], None, [bins], 
                         [0, 256] if canal > 0 else [0, 180])
     
-    # Normalizar histograma
-    hist = cv2.normalize(hist, hist).flatten() * 250
+    # Normalizar histograma para 0-200 pixels
+    hist = cv2.normalize(hist, hist, 0, 200, cv2.NORM_MINMAX).flatten()
     
-    # Criar imagem do histograma
-    hist_height = 256
-    hist_width = bins
+    # Criar imagem do histograma com tamanho maior
+    hist_height = 250
+    hist_width = max(400, bins)  # Mínimo 400 pixels de largura
     hist_img = np.ones((hist_height, hist_width, 3), dtype=np.uint8) * 255
+    
+    # Calcular largura de cada barra
+    bar_width = max(1, hist_width // bins)
     
     # Desenhar barras
     for i in range(bins):
         h = int(hist[i])
-        cv2.line(hist_img, (i, hist_height), (i, hist_height - h), (100, 100, 100), 1)
+        x_start = i * bar_width
+        x_end = min(x_start + bar_width, hist_width)
+        cv2.rectangle(hist_img, (x_start, hist_height - h), (x_end - 1, hist_height), 
+                     (100, 100, 100), -1)
     
-    return hist_img
+    # Converter de BGR para RGB
+    return cv2.cvtColor(hist_img, cv2.COLOR_BGR2RGB)
