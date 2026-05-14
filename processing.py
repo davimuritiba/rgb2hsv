@@ -36,7 +36,7 @@ def hsv_para_preview_valor(hsv: np.ndarray) -> np.ndarray:
     """RGB uint8: valor (V) em escala de cinza."""
     _, _, v = cv2.split(hsv)
     # Converter para grayscale: replicar o canal V em RGB
-    return cv2.cvtColor(cv2.merge([v, v, v]), cv2.COLOR_RGB2RGB)
+    return cv2.cvtColor(cv2.merge([v, v, v]), cv2.COLOR_BGR2RGB)
 
 
 def hsv_para_canal_cinza(hsv: np.ndarray, canal: int) -> np.ndarray:

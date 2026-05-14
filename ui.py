@@ -326,12 +326,16 @@ class App(ctk.CTk):
         self._build_tab_comparacao(self.tab_comparacao)
 
     def _build_tab_canais(self, tab: ctk.CTkFrame) -> None:
-        """Visualização dos 3 canais HSV."""
-        container = ctk.CTkFrame(tab, fg_color="transparent")
-        container.pack(fill=tk.BOTH, expand=True, padx=12, pady=12)
+        """Visualização dos 3 canais HSV em layout 2x2."""
+        outer_container = ctk.CTkFrame(tab, fg_color="transparent")
+        outer_container.pack(fill=tk.BOTH, expand=True, padx=12, pady=12)
+
+        # Primeira linha: RGB Original e Matiz (H)
+        row1 = ctk.CTkFrame(outer_container, fg_color="transparent")
+        row1.pack(fill=tk.BOTH, expand=True, padx=0, pady=(0, 6))
 
         # RGB original
-        col1 = ctk.CTkFrame(container, fg_color=("#1e2733", "#1e2733"), corner_radius=10)
+        col1 = ctk.CTkFrame(row1, fg_color=("#1e2733", "#1e2733"), corner_radius=10)
         col1.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 6))
 
         ctk.CTkLabel(
@@ -347,8 +351,8 @@ class App(ctk.CTk):
         self.lbl_rgb.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
 
         # HSV - Matiz
-        col2 = ctk.CTkFrame(container, fg_color=("#1e2733", "#1e2733"), corner_radius=10)
-        col2.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=6)
+        col2 = ctk.CTkFrame(row1, fg_color=("#1e2733", "#1e2733"), corner_radius=10)
+        col2.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(6, 0))
 
         ctk.CTkLabel(
             col2,
@@ -362,9 +366,13 @@ class App(ctk.CTk):
         )
         self.lbl_hsv_h.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
 
+        # Segunda linha: Saturação (S) e Valor (V)
+        row2 = ctk.CTkFrame(outer_container, fg_color="transparent")
+        row2.pack(fill=tk.BOTH, expand=True, padx=0, pady=(6, 0))
+
         # HSV - Saturação
-        col3 = ctk.CTkFrame(container, fg_color=("#1e2733", "#1e2733"), corner_radius=10)
-        col3.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(6, 0))
+        col3 = ctk.CTkFrame(row2, fg_color=("#1e2733", "#1e2733"), corner_radius=10)
+        col3.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 6))
 
         ctk.CTkLabel(
             col3,
@@ -379,7 +387,7 @@ class App(ctk.CTk):
         self.lbl_hsv_s.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
 
         # HSV - Valor
-        col4 = ctk.CTkFrame(container, fg_color=("#1e2733", "#1e2733"), corner_radius=10)
+        col4 = ctk.CTkFrame(row2, fg_color=("#1e2733", "#1e2733"), corner_radius=10)
         col4.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(6, 0))
 
         ctk.CTkLabel(
